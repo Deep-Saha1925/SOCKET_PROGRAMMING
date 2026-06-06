@@ -60,7 +60,20 @@ int main(int argc, char *argv[]){
         if(n < 0)
             error("Error on writing.");
 
+        bzero(buffer, 255);
+        n = read(sockfd, buffer, 255);
+        if(n < 0){
+            error("ERROR on reading..");
+        }
+
+        printf("SERVER: %s\n", buffer);
+        int i = strncmp("BYE", buffer, 3);
+        if(i == 0){
+            break;
+        }
     }
     
+    close(sockfd);
+    return 0;
 
 }
