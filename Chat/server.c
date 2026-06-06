@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
         exit(0);
     }
 
-    int sockfd, newsockfd   , portno, n;
+    int sockfd, newsockfd, portno, n;
     struct sockaddr_in serv_addr, cli_addr;
     socklen_t clien;
     struct hostent *server;
@@ -51,6 +51,13 @@ int main(int argc, char *argv[]){
     if(bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
         error("Binding faled!!");
 
+    listen(sockfd, 5);
+    clilen = sizeof(cli_addr);
+
+    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
+    if(newsockfd < 0){
+        error("ERROR on acception");
+    }
 
     bcopy((char *)server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
     
@@ -58,19 +65,28 @@ int main(int argc, char *argv[]){
         error("ERROR connecting");
     }
 
-    printf("CLIENT: ");
+    // printf("CLIENT: ");
     while(1){
         bzero(buffer, 256);
-        fgets(buffer, 255, stdin);
-        n = write(sockfd, buffer, strlen(buffer));
-        if(n < 0){
-            error("ERROR writing to socket");
-        }
+        // fgets(buffer, 255, stdin);
+        // n = write(sockfd, buffer, strlen(buffer));
+        // if(n < 0){
+        //     error("ERROR writing to socket");
+        // }
 
-        bzero(buffer, 256);
-        n = read(sockfd, buffer, 255);
+        bzero(buffer, 255);
+        n = read(newsockfd, buffer, 255);
         if(n < 0){
             error("ERROR reading from socket");
+        }
+
+        printf("CLIENT: %s", buffer);
+        bzero(buffer, 255);
+
+        fgets(buffer, 255, stdin);
+        n = write(newsockfd, buffer, strlen(buffer));
+        if(n < 0){
+            error("ERROR writing to socket");
         }
 
         printf("SERVER: %s\n", buffer);
@@ -80,4 +96,8 @@ int main(int argc, char *argv[]){
             break;
         }
     }
+
+    close(newsockfd);
+    close(sockfd);
+    return 0;
 }
