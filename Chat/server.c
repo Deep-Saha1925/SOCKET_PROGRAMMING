@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<unistd.h>
+#include<string.h>
 #include<sys/socket.h>
 #include<sys/types.h>
 #include<netinet/in.h>
@@ -58,5 +60,10 @@ int main(int args, char *argv[]){
         }
 
         printf("SERVER: %s\n", buffer);
+
+        int i = strncmp("BYE", buffer, 3);
+        if(i == 0){
+            break;
+        }
     }
 }
