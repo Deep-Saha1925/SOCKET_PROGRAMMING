@@ -6,6 +6,7 @@
 #include<sys/types.h>
 #include<netinet/in.h>
 #include<netdb.h>
+#include<ctype.h>
 
 void error(const char *msg){
     perror(msg);
@@ -53,10 +54,27 @@ int main(int argc, char *argv[]){
 
     bzero(buffer, 255);
 
-    File *f;
+    FILE *f;
     int words = 0;
 
-    
+    char c;
+    f = fopen("test.txt", "r");
+    while((c = getc(f)) != EOF){
+        fscanf(f, "%s", buffer);
+        if(isspace(c) || c == '\t')
+            words++;
+    }
+    write(sockfd, &words, sizeof(int));
+    rewind(f);
+
+    char ch;
+    while(ch != EOF){
+        fscanf(f, "%s", buffer);
+        write(sockfd, buffer, 255);
+        ch = fgetc(f);
+    }
+
+    printf("File has been successfully sent...Thank you!!");
 
     close(sockfd);
     return 0;
