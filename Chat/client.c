@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
 
     if(argc < 3){
         fprintf(stderr, "usage %s hostname port\n", argv[0]);
-        exit(0);
+        exit(1);
     }
 
     int sockfd, portno, n;
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
     server = gethostbyname(argv[1]);
     if(server == NULL){
         fprintf(stderr, "ERROR: NO SUCH HOST\n");
-        exit(0);
+        exit(1);
     }
 
     bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -50,6 +50,16 @@ int main(int argc, char *argv[]){
 
     if(connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
         error("ERROR connecting");
+    }
+
+    while(1){
+        bzero(buffer, 255);
+        fgets(buffer, 255, stdin);
+        n = write(sockfd, buffer, strlen(buffer));
+
+        if(n < 0)
+            error("Error on writing.");
+
     }
     
 

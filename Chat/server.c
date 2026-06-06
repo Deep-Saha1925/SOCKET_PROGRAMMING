@@ -62,11 +62,6 @@ int main(int argc, char *argv[]){
     // printf("CLIENT: ");
     while(1){
         bzero(buffer, 256);
-        // fgets(buffer, 255, stdin);
-        // n = write(sockfd, buffer, strlen(buffer));
-        // if(n < 0){
-        //     error("ERROR writing to socket");
-        // }
 
         bzero(buffer, 255);
         n = read(newsockfd, buffer, 255);
