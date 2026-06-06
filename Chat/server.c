@@ -52,14 +52,13 @@ int main(int argc, char *argv[]){
         error("Binding faled!!");
 
     listen(sockfd, 5);
-    clilen = sizeof(cli_addr);
+    clien = sizeof(cli_addr);
 
-    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
+    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clien);
     if(newsockfd < 0){
         error("ERROR on acception");
     }
 
-    // printf("CLIENT: ");
     while(1){
         bzero(buffer, 256);
 
@@ -78,7 +77,7 @@ int main(int argc, char *argv[]){
             error("ERROR writing to socket");
         }
 
-        printf("SERVER: %s\n", buffer);
+        //printf("SERVER: %s\n", buffer);
 
         int i = strncmp("BYE", buffer, 3);
         if(i == 0){
