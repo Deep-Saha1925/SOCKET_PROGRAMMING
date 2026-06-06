@@ -59,7 +59,21 @@ int main(int argc, char *argv[]){
         error("ERROR on acception");
     }
 
-    
+    FILE *fp;
+    int ch = 0;
+
+    fp = fopen("received_file.txt", "a");
+    int words = 0;
+
+    read(newsockfd, &words, sizeof(int));
+
+    while(ch != words){
+        read(newsockfd, buffer, 255);
+        fprintf(fp, "%s", buffer);
+        ch++;
+    }
+
+    printf("File has been received successfully..Saved as received_file.txt!!");
 
     close(newsockfd);
     close(sockfd);
