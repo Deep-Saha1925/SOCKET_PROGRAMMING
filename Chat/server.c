@@ -9,7 +9,7 @@
 
 void error(const char *msg){
     perror(msg);
-    exit(1);
+    exit(0);
 }
 
 int main(int argc, char *argv[]){
@@ -57,12 +57,6 @@ int main(int argc, char *argv[]){
     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
     if(newsockfd < 0){
         error("ERROR on acception");
-    }
-
-    bcopy((char *)server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
-    
-    if(connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
-        error("ERROR connecting");
     }
 
     // printf("CLIENT: ");
