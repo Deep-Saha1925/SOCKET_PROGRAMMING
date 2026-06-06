@@ -35,4 +35,11 @@ int main(int args, char *argv[]){
     if(connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
         error("ERROR connecting");
     }
+
+    printf("CLIENT: ");
+    while(1){
+        bzero(buffer, 256);
+        fgets(buffer, 255, stdin);
+        n = write(sockfd, buffer, strlen(buffer));
+    }
 }
